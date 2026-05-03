@@ -13,7 +13,7 @@ def gerar():
     prompt = data.get("prompt", "")
     headers = {"Authorization": f"Bearer {HF_TOKEN}"}
     
-    url = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
+    url = "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5"
     payload = {"inputs": prompt}
     
     response = requests.post(url, headers=headers, json=payload, timeout=60)
