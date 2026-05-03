@@ -6,17 +6,21 @@ app = Flask(__name__)
 CORS(app)
 
 HF_TOKEN = os.environ.get("HF_TOKEN")
-API_URL = "https://api-inference.huggingface.co/models/SG161222/Realistic_Vision_V6.0_B1_noVAE"
 
 @app.route("/gerar", methods=["POST"])
 def gerar():
     data = request.json
     prompt = data.get("prompt", "")
     headers = {"Authorization": f"Bearer {HF_TOKEN}"}
-    payload = {"inputs": prompt, "parameters": {"width": 512, "height": 768}}
-    response = requests.post(API_URL, headers=headers, json=payload, timeout=60)
+    
+    url = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
+    payload = {"inputs": prompt}
+    
+    response = requests.post(url, headers=headers, json=payload, timeout=60)
+    
     if response.status_code != 200:
         return jsonify({"erro": response.text}), 500
+    
     img_b64 = base64.b64encode(response.content).decode("utf-8")
     return jsonify({"imagem": f"data:image/jpeg;base64,{img_b64}"})
 
